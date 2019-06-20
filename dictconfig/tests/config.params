@@ -1,0 +1,22 @@
+[Section1]
+
+Section1Str : This is a string
+Section1Int : 542
+Section1Bool : True
+Section1List : [1, 2, 3, 5]
+
+
+[Section2]
+
+Section1Str : test/data/dir
+Section1Float : 3.1415
+Section1Bool : False
+Section2List : [6, 3, 1]
+
+[Section3]
+
+Section3Str : Testing
+Section3Float : 1.28181
+Section3Bool : False
+Section3List : [1.1, 0.2, 1.3, 0.4]
+
