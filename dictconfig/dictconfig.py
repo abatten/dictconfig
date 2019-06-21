@@ -3,7 +3,7 @@ import json
 import configparser as cp
 
 
-def isfloat(string):
+def _isfloat(string):
     """
     Checks if a string can be converted into a float.
 
@@ -25,7 +25,7 @@ def isfloat(string):
         return False
 
 
-def isint(string):
+def _isint(string):
     """
     Checks if a string can be converted into an int.
 
@@ -47,7 +47,7 @@ def isint(string):
         return False
 
 
-def isbool(string):
+def _isbool(string):
     """
     Checks if a string can be converted into a boolean.
 
@@ -64,7 +64,7 @@ def isbool(string):
     return string in ("True", "true", "False", "false")
 
 
-def islist(string):
+def _islist(string):
     """
     Checks if a string can be converted into a list.
 
@@ -98,31 +98,26 @@ def get_parameter(parameter, value, section, config):
     param: int, float, list or bool
         The
     """
-    if isint(value):
+    if _isint(value):
         param = config.getint(section, parameter)
-        print("Int")
 
-    elif isfloat(value):
+    elif _isfloat(value):
         param = config.getfloat(section, parameter)
-        print("Float")
 
-    elif isbool(value):
+    elif _isbool(value):
         param = config.getboolean(section, parameter)
-        print("Bool")
 
-    elif islist(value):
+    elif _islist(value):
         param = json.loads(config.get(section, parameter))
-        print("list")
 
     else:
         param = config.get(section, parameter)
-        print("str")
 
     return param
 
 
 
-def check_sections_exist(section, config):
+def _check_sections_exist(section, config):
     """
 
     Parameters
@@ -171,13 +166,13 @@ def check_sections_exist(section, config):
 
     return section
 
-def read_params(param_path, section="All"):
+def read(path, section="All"):
     """
     Reads 
 
     Parameters
     ----------
-    param_path : str
+    path : str
         The path to a parameter file that can be read using config parser.
 
     section : str or list or "All"
@@ -191,36 +186,18 @@ def read_params(param_path, section="All"):
 
     """
     
-    if not os.path.exists(param_path):
-        raise OSError(f"Could not find parameter file: {param_path}")
+    if not os.path.exists(path):
+        raise OSError(f"Could not find parameter file: {path}")
 
     params = {}
 
     config = cp.ConfigParser()
-    config.read(param_path)
+    config.read(path)
 
-    section = check_sections_exist(section, config)
+    section = _check_sections_exist(section, config)
 
-    for section_name in section:
-        for key, value in zip(config[section_name].keys(), config[section_name].values()):
-            #print(keys, value)
-            params[key] = get_parameter(key, value, section_name, config)
+    for name in section:
+        for key, value in zip(config[name].keys(), config[name].values()):
+            params[key] = get_parameter(key, value, name, config)
             
     return params
-
-
-if __name__ == "__main__":
-
-    #config = cp.ConfigParser()
-    #config.read("config.params")
-
-    print(read_params("config.params", ["Section1", "Section3"]))
-
-    #check_sections_exist(config, "Section2")
-    #check_sections_exist(config, "Section3")
-    #check_sections_exist(config, "All")
-    #check_sections_exist(config, ["Section1", "Section3"])
-    #check_sections_exist(config, ["Section1", "Section4"])
-
-
-

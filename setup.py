@@ -16,7 +16,7 @@ def get_version():
 
     with open(version_file, "r") as vf:
         lines = vf.read()
-        version = re.search(r"^_*version_* = ['\"]([^'\"]*)['\"]", vf, re.M).group(1)
+        version = re.search(r"^_*version_* = ['\"]([^'\"]*)['\"]", lines, re.M).group(1)
         return version
 
 
@@ -32,7 +32,7 @@ setup(
     project_urls={
         'Source Code': "https://github.com/abatten/dictconfig"
         },
-    description='A wrapper around configparser to help create dictionaries from parameter files',
+    description='A wrapper for configparser to help create dictionaries from parameter files',
     long_description=long_description,
     install_requires=requirements,
     classifiers=[
