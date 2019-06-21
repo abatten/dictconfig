@@ -81,13 +81,15 @@ def _islist(string):
     return (list(string)[0] == "[") and (list(string)[-1] == "]")
 
 
-def get_parameter(parameter, value, section, config):
+def get_option(option, value, section, config):
     """
     Get an option value from a given section
 
     Parameters
     ----------
-    parameter: str
+    option: str
+
+    value: str
 
     section: str
 
@@ -99,19 +101,19 @@ def get_parameter(parameter, value, section, config):
         The
     """
     if _isint(value):
-        param = config.getint(section, parameter)
+        param = config.getint(section, option)
 
     elif _isfloat(value):
-        param = config.getfloat(section, parameter)
+        param = config.getfloat(section, option)
 
     elif _isbool(value):
-        param = config.getboolean(section, parameter)
+        param = config.getboolean(section, option)
 
     elif _islist(value):
-        param = json.loads(config.get(section, parameter))
+        param = json.loads(config.get(section, option))
 
     else:
-        param = config.get(section, parameter)
+        param = config.get(section, option)
 
     return param
 
@@ -198,6 +200,6 @@ def read(path, section="All"):
 
     for name in section:
         for key, value in zip(config[name].keys(), config[name].values()):
-            params[key] = get_parameter(key, value, name, config)
+            params[key] = get_option(key, value, name, config)
             
     return params
